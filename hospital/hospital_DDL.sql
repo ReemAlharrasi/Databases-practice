@@ -1,7 +1,7 @@
--- Hospital relational schema
+CREATE DATABASE hospital;
 
--- DEPARTMENT and DOCTOR reference each other (Head_doctor_id / Department_id),
--- so DEPARTMENT is created first without that FK, and it's added afterward.
+USE hospital;
+
 CREATE TABLE DEPARTMENT (
     dept_id        VARCHAR(20) PRIMARY KEY,
     dept_name      VARCHAR(100) NOT NULL,

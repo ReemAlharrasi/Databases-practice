@@ -1,4 +1,6 @@
--- Airline reservation relational schema (3NF)
+CREATE DATABASE airport;
+
+USE airport;
 
 CREATE TABLE AIRPORT (
     Airport_code VARCHAR(10) PRIMARY KEY,
@@ -53,8 +55,6 @@ CREATE TABLE FARE (
     FOREIGN KEY (Flight_number) REFERENCES FLIGHT(Flight_number)
 );
 
--- "Date" from the ERD is a reserved word in most SQL dialects,
--- so it's stored here as Instance_date.
 CREATE TABLE LEG_INSTANCE (
     Leg_no                      VARCHAR(20),
     Instance_date               DATE,
