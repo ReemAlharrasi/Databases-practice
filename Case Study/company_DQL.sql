@@ -1,7 +1,6 @@
 USE company;
 
 ------------------------ TASK 1: INSERT ------------------------
-
 INSERT INTO DEPARTMENT (D_NO, DName , ManagerID , hiredate) VALUES 
 ( '1','Headquarters', NULL, NULL),
 ( '2','Marketing', NULL, NULL),
@@ -15,8 +14,6 @@ INSERT INTO DEPT_LOCATIONS (DNum,Location) Values
 ('3','Riyadh'),
 ('4','Manama'),
 ('5','Doha');
-
-
 
 INSERT INTO EMPLOYEE (SSN, FName, LName, Gn, BD, DNum, SupervisorID, Salary, Address) Values
 ('888665555', 'James', 'Borg', 'M','1937-11-10', '1', NULL , 55000, '450 Stone, Houston TX');
@@ -36,24 +33,20 @@ SET ManagerID ='888665555',
 hiredate='1981-06-19'
 WHERE D_NO=1;
 
-
 UPDATE DEPARTMENT
 SET ManagerID ='987654321',
 hiredate='1998-01-01'
 WHERE D_NO=2;
-
 
 UPDATE DEPARTMENT
 SET ManagerID ='999887777',
 hiredate='2005-03-15'
 WHERE D_NO=3;
 
-
 UPDATE DEPARTMENT
 SET ManagerID ='987654321',
 hiredate='1995-01-01'
 WHERE D_NO=4;
-
 
 UPDATE DEPARTMENT
 SET ManagerID ='333445555',
@@ -67,14 +60,12 @@ INSERT INTO PROJECT (PNum,Pname,Location,DNum) VALUES
 ('10', 'Computerization', 'Manama', '4'),
 ('20', 'Reorganization', 'Doha', '1');
 
-
 INSERT INTO WORKS_ON (PNum, EmployeeID,WorkingHours) VALUES
 ('1', '123456789', 32.5),
 ('2', '123456789', 7.5),
 ('2', '333445555', 10.0),
 ('3', '333445555', 10.0),
 ('10', '999887777', 10.0);
-
 
 INSERT INTO DEPENDENT (SSN,DName,Gn,BD,RELATIONSHIP) VALUES
 ('333445555','Alice', 'F', '1986-04-05','Daughter'),
@@ -129,7 +120,62 @@ WHERE SSN = '123456789'; --error because other records reference this
 
 ------------------------ TASK 4: INNER JOIN ------------------------
 -- Join EMPLOYEE with DEPARTMENT and Display:  
--- a. Employee first name
-SELECT 
--- b. Employee last name
--- c. Department name
+-- Employee first name
+-- Employee last name
+-- Department name
+SELECT E.FName, E.LName, D.DName
+FROM EMPLOYEE E
+INNER JOIN DEPARTMENT D ON E.DNum = D.D_NO;
+
+------------------------ TASK 5: JOIN with Project ------------------------
+-- Join EMPLOYEE → WORKS_ON → PROJECT and Display:  
+-- Employee first name
+-- Employee last name
+-- Project name
+-- Hours worked  
+SELECT E.FName, E.LName, P.PName , W.WorkingHours
+FROM  WORKS_ON W
+INNER JOIN EMPLOYEE E ON E.SSN = W.EmployeeID
+INNER JOIN PROJECT P ON P.PNum = W.PNum;
+
+------------------------ TASK 6: Department and Location ------------------------
+-- Join DEPARTMENT → DEPT_LOCATIONS and Display:  
+-- Department number
+-- Department name
+-- Department location
+SELECT D.D_NO, D.DName, L.Location
+FROM DEPARTMENT D_NO
+INNER JOIN DEPT_LOCATIONS ON D.D_NO = L.DNum;
+
+------------------------ TASK 7: Employee and Dependent ------------------------
+-- Join EMPLOYEE → DEPENDENT and Display:  
+-- Employee first name
+-- Employee last name
+-- Dependent name
+-- Relationship 
+SELECT E.FName, E.LName, D.DName, D.RELATIONSHIP
+FROM EMPLOYEE E
+INNER JOIN DEPENDENT D ON E.SSN = D.SSN;
+
+------------------------ TASK 8: LEFT JOIN ------------------------
+-- Display all employees, including employees who do not have a dependent. Show:  
+-- Employee SSN
+-- Employee name
+-- Dependent name
+-- Relationship  
+SELECT E.SSN, E.FName, E.LName, D.DName, D.RELATIONSHIP
+FROM EMPLOYEE E
+LEFT JOIN  DEPENDENT D ON E.SSN = D.SSN;
+
+------------------------ TASK 9: Multiple JOIN ------------------------
+-- JOIN EMPLOYEE → DEPARTMENT → WORKS_ON → PROJECT Display :
+-- Employee name, Department name
+-- Project name, Project location
+-- Hours worked
+SELECT E.FName, E.LName, D.DName, P.Pname, P.Location, W.WorkingHours
+FROM EMPLOYEE E
+INNER JOIN DEPARTMENT D ON E.DNum = D.D_NO
+INNER JOIN WORKS_ON W   ON E.SSN = W.EmployeeID
+INNER JOIN PROJECT P    ON W.PNum = P.PNum;
+
+
