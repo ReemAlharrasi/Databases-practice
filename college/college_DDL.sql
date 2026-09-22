@@ -1,4 +1,6 @@
--- University relational schema (3NF)
+CREATE DATABASE college;
+
+USE college;
 
 CREATE TABLE DEPARTMENT (
     Department_id VARCHAR(20) PRIMARY KEY,
@@ -58,8 +60,7 @@ CREATE TABLE COURSE (
     FOREIGN KEY (Department_id) REFERENCES DEPARTMENT(Department_id)
 );
 
--- "Date"/"Time" from the ERD are reserved words in most SQL dialects,
--- so they're stored here as Exam_date / Exam_time.
+
 CREATE TABLE EXAMS (
     Exam_code     VARCHAR(20) PRIMARY KEY,
     Room          VARCHAR(20),
