@@ -144,7 +144,7 @@ INNER JOIN PROJECT P ON P.PNum = W.PNum;
 -- Department name
 -- Department location
 SELECT D.D_NO, D.DName, L.Location
-FROM DEPARTMENT D_NO
+FROM DEPARTMENT D
 INNER JOIN DEPT_LOCATIONS ON D.D_NO = L.DNum;
 
 ------------------------ TASK 7: Employee and Dependent ------------------------
@@ -178,4 +178,92 @@ INNER JOIN DEPARTMENT D ON E.DNum = D.D_NO
 INNER JOIN WORKS_ON W   ON E.SSN = W.EmployeeID
 INNER JOIN PROJECT P    ON W.PNum = P.PNum;
 
+------------------------ TASK 10: Employee Count ------------------------
+-- Find the total number of employees in the EMPLOYEE table
+SELECT COUNT(*) AS TotalEmployees
+FROM EMPLOYEE;
 
+------------------------ TASK 11: Salary Analysis ------------------------
+-- Display total salary, average salary, minimum salary, maximum salary
+SELECT SUM(Salary) AS TotalSalary,
+       AVG(Salary) AS AverageSalary,
+       MIN(Salary) AS MinSalary,
+       MAX(Salary) AS MaxSalary
+FROM EMPLOYEE;
+
+------------------------ TASK 12: Department Employee Count ------------------------
+-- Display department number and number of employees
+SELECT DNum, COUNT(*) AS NumEmployees
+FROM EMPLOYEE
+GROUP BY DNum;
+
+------------------------ TASK 13: Department Salary ------------------------
+-- Display department number, total salary, average salary
+SELECT DNum,
+       SUM(Salary) AS TotalSalary,
+       AVG(Salary) AS AverageSalary
+FROM EMPLOYEE
+GROUP BY DNum;
+
+------------------------ TASK 14: Project Hours ------------------------
+-- Display project number and total hours worked on each project
+SELECT PNum, SUM(WorkingHours) AS TotalHours
+FROM WORKS_ON
+GROUP BY PNum;
+
+------------------------ TASK 15: Employee Working Hours ------------------------
+-- Display employee SSN and total hours worked
+SELECT EmployeeID, SUM(WorkingHours) AS TotalHours
+FROM WORKS_ON
+GROUP BY EmployeeID;
+
+------------------------ TASK 16: Department Salary Analysis ------------------------
+-- Display department name, number of employees, total salary, average salary
+SELECT D.DName,
+       COUNT(E.SSN) AS NumEmployees,
+       SUM(E.Salary) AS TotalSalary,
+       AVG(E.Salary) AS AverageSalary
+FROM EMPLOYEE E
+INNER JOIN DEPARTMENT D ON E.DNum = D.D_NO
+GROUP BY D.DName;
+
+------------------------ TASK 17: Project Employee Analysis ------------------------
+-- Display project name, number of employees, total hours, average hours
+SELECT P.PName,
+       COUNT(W.EmployeeID) AS NumEmployees,
+       SUM(W.WorkingHours) AS TotalHours,
+       AVG(W.WorkingHours) AS AverageHours
+FROM PROJECT P
+INNER JOIN WORKS_ON W ON P.PNum = W.PNum
+GROUP BY P.PName;
+
+------------------------ TASK 18: Department Project Analysis ------------------------
+-- Display department name, number of projects, total project working hours
+SELECT D.DName,
+       COUNT(DISTINCT P.PNum) AS NumProjects,
+       SUM(W.WorkingHours) AS TotalWorkingHours
+FROM DEPARTMENT D
+INNER JOIN PROJECT P ON D.D_NO = P.DNum
+INNER JOIN WORKS_ON W ON P.PNum = W.PNum
+GROUP BY D.DName;
+
+------------------------ TASK 19: Departments with Avg Salary > 30,000 ------------------------
+-- Display departments where the average employee salary is greater than 30,000
+SELECT DNum, AVG(Salary) AS AverageSalary
+FROM EMPLOYEE
+GROUP BY DNum
+HAVING AVG(Salary) > 30000;
+
+------------------------ TASK 20: Projects with Total Hours > 15 ------------------------
+-- Display projects where the total working hours are greater than 15 hours
+SELECT PNum, SUM(WorkingHours) AS TotalHours
+FROM WORKS_ON
+GROUP BY PNum
+HAVING SUM(WorkingHours) > 15;
+
+------------------------ TASK 21: Departments with More Than 1 Employee ------------------------
+-- Display departments that have more than 1 employee
+SELECT DNum, COUNT(*) AS NumEmployees
+FROM EMPLOYEE
+GROUP BY DNum
+HAVING COUNT(*) > 1;
